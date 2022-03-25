@@ -2,8 +2,15 @@ package Utilities;
 
 import javafx.scene.control.Alert;
 
-public class Alerts {
-
+/**
+ * Alert utility functions.
+ */
+public class GeneralFunctions {
+    /**
+     * Passes in a title and header string to display them as an error.
+     * @param Title title of the error
+     * @param Header header of the error
+     */
     public void alertError(String Title, String Header) {
         Alert general = new Alert(Alert.AlertType.ERROR);
         general.setTitle(Title);
