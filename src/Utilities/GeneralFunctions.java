@@ -1,6 +1,15 @@
 package Utilities;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Alert utility functions.
@@ -17,6 +26,14 @@ public class GeneralFunctions {
         general.setHeaderText(Header);
         general.show();
     }
+    public void returnToAppointments(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../view/MainForm.fxml")));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene MainFormScene = new Scene(root);
+        stage.setScene(MainFormScene);
+        stage.show();
+    }
+
     /*
     WRITE SOME FUNCTION TO GET CONTACT ID FROM CONTACT NAME
     public long getContactID(String contactName)
