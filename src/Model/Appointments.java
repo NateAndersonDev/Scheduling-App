@@ -1,5 +1,8 @@
 package Model;
 
+import java.sql.Time;
+
+
 /**
  * Appointment class
  */
@@ -9,8 +12,8 @@ public class Appointments {
     private String description;
     private String location;
     private String type;
-    private String start;
-    private String end;
+    private Time start;
+    private Time end;
     private int customerId;
     private int userID;
     private int contactId;
@@ -28,7 +31,7 @@ public class Appointments {
      * @param userID the user id
      * @param contactId the contact id
      */
-    public Appointments(int appointmentId, String title, String description, String location, String type, String start, String end, int customerId, int userID, int contactId) {
+    public Appointments(int appointmentId, String title, String description, String location, String type, Time start, Time end, int customerId, int userID, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -125,7 +128,7 @@ public class Appointments {
      *
      * @return the start time
      */
-    public String getStart() {
+    public Time getStart() {
         return start;
     }
 
@@ -133,7 +136,7 @@ public class Appointments {
      *
      * @param start the start time of the appointment
      */
-    public void setStart(String start) {
+    public void setStart(Time start) {
         this.start = start;
     }
 
@@ -141,7 +144,7 @@ public class Appointments {
      *
      * @return the end
      */
-    public String getEnd() {
+    public Time getEnd() {
         return end;
     }
 
@@ -149,7 +152,7 @@ public class Appointments {
      *
      * @param end the end time of the appointment
      */
-    public void setEnd(String end) {
+    public void setEnd(Time end) {
         this.end = end;
     }
 
