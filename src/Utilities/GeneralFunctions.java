@@ -18,25 +18,19 @@ import java.util.Objects;
 /**
  * Alert utility functions.
  */
-public class GeneralFunctions {
+public interface GeneralFunctions {
     /**
      * Passes in a title and header string to display them as an error.
      * @param Title title of the error
      * @param Header header of the error
      */
-    public void alertError(String Title, String Header) {
+    static void alertError(String Title, String Header) {
         Alert general = new Alert(Alert.AlertType.ERROR);
         general.setTitle(Title);
         general.setHeaderText(Header);
         general.show();
     }
-    public void returnToScheduler(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../view/Scheduler.fxml")));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene MainFormScene = new Scene(root);
-        stage.setScene(MainFormScene);
-        stage.show();
-    }
+
 
     /*
     WRITE SOME FUNCTION TO GET CONTACT ID FROM CONTACT NAME

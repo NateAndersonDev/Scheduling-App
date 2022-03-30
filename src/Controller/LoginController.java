@@ -1,5 +1,9 @@
 package Controller;
 
+import DAO.DBConnection;
+import DAO.UserDao;
+import Model.User;
+import Utilities.GeneralFunctions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +20,10 @@ import org.w3c.dom.Text;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.ZoneId;
 import java.util.Objects;
 
 /**
@@ -23,15 +31,10 @@ import java.util.Objects;
  */
 public class LoginController {
     public Label FxError;
-    public TextField FxZoneID;
     private Stage stage;
     @FXML
     private AnchorPane MainScenePane;
     private Parent root;
-
-
-        @FXML
-        private TextField FxZoneId;
 
         @FXML
         private TextField LoginPasswordField;
@@ -42,6 +45,8 @@ public class LoginController {
         @FXML
         public Text FxUserName;
 
+        @FXML
+        public Label ZoneIDField;
 
 
     public Button LoginFormLoginBTN;
@@ -50,18 +55,37 @@ public class LoginController {
 
     /**
      * method to exit the application
-     * @param exitApp
+     * @param exitApp closes application
      */
     public void exitApplication(ActionEvent exitApp) {
         stage = (Stage) MainScenePane.getScene().getWindow();
         stage.close();
     }
-    public void viewScheduler(ActionEvent event) throws IOException{
+    void viewScheduler(ActionEvent event) throws IOException{
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../View/Scheduler.fxml")));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scheduler = new Scene(root);
         stage.setScene(scheduler);
         stage.show();
+    }
+    public void initialize(){
+        ZoneIDField.setText(ZoneId.systemDefault().getId());
+        FxError.setVisible(false);
+    }
+
+
+    public void LoginBtnPress(ActionEvent event) throws SQLException, IOException {
+        String userNM = LoginUserNameField.getText();
+        String userPW = LoginPasswordField.getText();
+        User user = new User(userNM,userPW);
+
+        if(UserDao.checkValidUserName(user.getUserName())){
+            if(UserDao.checkMatchPw(user.getUserName(),user.getPassword())){
+                viewScheduler(event);
+            }
+        } else {
+            FxError.setVisible(true);
+        }
     }
 }
 

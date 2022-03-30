@@ -33,10 +33,10 @@
             </Text>
             <TextField fx:id="LoginUserNameField" layoutX="141.0" layoutY="142.0" promptText="Case-Sensitive!" />
             <TextField fx:id="LoginPasswordField" layoutX="141.0" layoutY="192.0" promptText="Case-Sensitive!" />
-            <Button fx:id="LoginFormLoginBTN" layoutX="63.0" layoutY="242.0" mnemonicParsing="false" text="%Login" onAction="#viewScheduler"/>
+            <Button fx:id="LoginFormLoginBTN" layoutX="63.0" layoutY="242.0" mnemonicParsing="false" onAction="#LoginBtnPress" text="%Login" />
             <Button fx:id="LoginFormCancelBTN" layoutX="177.0" layoutY="242.0" mnemonicParsing="false" onAction="#exitApplication" text="%Cancel" />
-            <Label fx:id="FxError" layoutX="37.0" layoutY="116.0" text="%Error" textAlignment="CENTER" textFill="#d31414" />
-            <TextField fx:id="FxZoneID" editable="false" layoutX="103.0" layoutY="307.0" />
+            <Label fx:id="FxError" layoutX="37.0" layoutY="116.0" text="%Error" textAlignment="CENTER" textFill="#313335" />
+            <Label fx:id="ZoneIDField" layoutX="105.0" layoutY="311.0" text="Label" />
          </children>
       </AnchorPane>
    </children>

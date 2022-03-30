@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class CountryDao {
 
-    public static ObservableList<Countries> getCountries(){
+    /*public static ObservableList<Countries> getCountries(){
         ObservableList<Countries> countryList = FXCollections.observableArrayList(); //creates list
 
         try{
@@ -32,6 +32,6 @@ public class CountryDao {
         }
 
         return countryList;
-    }
+    }*/
 
 }

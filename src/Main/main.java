@@ -2,6 +2,7 @@ package Main;
 
 
 import DAO.DBConnection;
+import Model.Appointments;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,9 +16,10 @@ import java.util.ResourceBundle;
 public class main extends Application {
 
     public static void main(String[] args) {
-        DBConnection.startConnection();
+
+  //      DBConnection.startConnection();
         launch(args);
-        DBConnection.closeConnection();
+  //      DBConnection.closeConnection();
     }
 
 

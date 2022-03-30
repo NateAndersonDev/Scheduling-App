@@ -10,12 +10,10 @@ public class User {
 
     /**
      * User Class constructor
-     * @param userId the user's ID
      * @param userName the user's Name
      * @param password the user's Password
      */
-    public User(int userId, String userName, String password) {
-        this.userId = userId;
+    public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
