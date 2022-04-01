@@ -4,9 +4,12 @@ package Main;
 import DAO.DBConnection;
 import Model.Appointments;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.util.Locale;
@@ -15,11 +18,13 @@ import java.util.ResourceBundle;
 
 public class main extends Application {
 
+
     public static void main(String[] args) {
 
-  //      DBConnection.startConnection();
+        DBConnection.openConnection();
+
         launch(args);
-  //      DBConnection.closeConnection();
+       DBConnection.closeConnection();
     }
 
 

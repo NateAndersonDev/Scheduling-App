@@ -1,9 +1,13 @@
 package Model;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -15,14 +19,14 @@ public class Appointments {
     private String description;
     private String location;
     private String type;
-    private Time start;
-    private Time end;
+    private Timestamp start;
+    private Timestamp end;
     private int customerId;
     private int userID;
     private int contactId;
-    private ObservableList<Appointments> apptlist = FXCollections.observableArrayList();
-
-/*    *//**
+    private Date date;
+    //private ObservableList<Appointments> oblist = FXCollections.observableArrayList();
+/**
      * Appointment class constructor
      * @param appointmentId the appointmentID
      * @param title the appointment title
@@ -34,8 +38,8 @@ public class Appointments {
      * @param customerId the customer id
      * @param userID the user id
      * @param contactId the contact id
-     *//*
-    public Appointments(int appointmentId, String title, String description, String location, String type, Time start, Time end, int customerId, int userID, int contactId) {
+     */
+    public Appointments(int appointmentId, String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userID, int contactId, Date date) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -46,7 +50,7 @@ public class Appointments {
         this.customerId = customerId;
         this.userID = userID;
         this.contactId = contactId;
-    }*/
+    }
 
     /**
      *
@@ -60,7 +64,7 @@ public class Appointments {
      *
      * @param appointmentId the appointment id of the meeting
      */
-    public void setAppointmentId(int appointmentId) {
+    public  void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
 
@@ -132,7 +136,7 @@ public class Appointments {
      *
      * @return the start time
      */
-    public Time getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
@@ -140,7 +144,7 @@ public class Appointments {
      *
      * @param start the start time of the appointment
      */
-    public void setStart(Time start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
 
@@ -148,7 +152,7 @@ public class Appointments {
      *
      * @return the end
      */
-    public Time getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
@@ -156,7 +160,7 @@ public class Appointments {
      *
      * @param end the end time of the appointment
      */
-    public void setEnd(Time end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 
@@ -208,8 +212,8 @@ public class Appointments {
         this.contactId = contactId;
     }
 
-    public ObservableList<Appointments> getApptlist() {
-        return this.apptlist;
-    }
+  /*  public ObservableList<Appointments> getOblist() {
+        return oblist;
+    }*/
 }
 

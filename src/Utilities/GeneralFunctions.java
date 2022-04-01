@@ -10,28 +10,91 @@ import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.*;
 import java.util.Objects;
 
-/**
- * Alert utility functions.
- */
+
 public interface GeneralFunctions {
-    /**
-     * Passes in a title and header string to display them as an error.
-     * @param Title title of the error
-     * @param Header header of the error
-     */
+
+    ZoneId myZoneId = ZoneId.systemDefault();
+    LocalDateTime userDateTime = LocalDateTime.now(myZoneId);
+
+
     static void alertError(String Title, String Header) {
         Alert general = new Alert(Alert.AlertType.ERROR);
         general.setTitle(Title);
         general.setHeaderText(Header);
         general.show();
     }
+  /* static String timeUTCtoLocal(Timestamp timestamp){
+        ZonedDateTime myZDT = ZonedDateTime.ofInstant(timestamp.toInstant(), myZoneId);
+        return (myZDT.toLocalDate() + " " + myZDT.toLocalTime());
+    }*/
+
+   /* static Timestamp (LocalDate date, LocalTime time){
+        LocalDateTime ldt = LocalDateTime.of(date, time);
+        ZonedDateTime zdt = ZonedDateTime.of(ldt, myZoneId);
+        ZoneId utcZoneId = ZoneId.of("UTC");
+        ZonedDateTime utcZDT = ZonedDateTime.ofInstant(zdt.toInstant(), utcZoneId);
+        return utcZDT;
+    }*/
+    static void getZonedDateTime(LocalDate date, LocalTime time){
+        LocalDateTime ldt = LocalDateTime.of(date, time);
+        ZonedDateTime zdt = ZonedDateTime.of(ldt, myZoneId);
+        System.out.println(zdt);
+    }
+
+    /*  static String timeLocalToEastern(LocalDate date, LocalTime time){
+        LocalDateTime ldt = LocalDateTime.of(date, time);
+        ZonedDateTime zdt = ZonedDateTime.of(ldt, myZoneId);
+        ZoneId eastZoneId = ZoneId.of("US/Eastern");
+        ZonedDateTime eastZDT = ZonedDateTime.ofInstant(zdt.toInstant(), eastZoneId);
+    }*/
 
 
+
+
+//------------ Time Zone Stuff ---------------/
+/*
+    ZoneId.getAvailableZoneIds().stream.sorted.forEach(system.out::prinln);
+    ------prints availabe zone ids
+
+    ZoneID.Systemdefault
+    ----- gets user's zone ID
+
+    ZoneId.getAvailableZoneIds().stream.filter(z -> z.contains("America").forEach(system.out::prinln);
+    -------lambda function that filters list of zone ID to america timezones.
+
+    date picker returns local date format
+
+    LocalDate myLD = LocalDate.of(2020,10,11);
+
+    set combobox to local time, give list of available local time objects
+
+    LocalTime myLT = LocalTime.of(22, 0); --creates local time object
+    LocalDateTime myLDT = LocalDateTime.of(myLD,myLT); ---creates local date/time object
+    ZoneID myzoneid = ZoneId.systemDefault();
+    ZoneDateTime myZDT = ZoneDateTime.of(myLDT, myzoneid) --creates zonedatetime object
+
+    Extract components:
+    myZDT.toLocalDate --display's just the date
+    myZDT.toLocalTime --displays just the time
+
+    database time format = (myZDT.tolocalDate.toString() + " " + myZDT.toLocalTime.toString()) -- insert this into database
+
+    ______________HOW TO CONVERT TIMEZONES_______________________
+    -----converts usertime into UTC time--------------(myZDT -> utcZDT)---------------
+    USER TIME = myZDT
+    ZoneID utcZoneId = ZoneID.of("UTC);
+    ZonedDateTime utcZDT = ZonedDateTime.ofInstant(myZDT.toInstant(), utcZoneId);
+
+    -------converts UTC time to usertime ---------------(utcZDT -> myZDT)------------
+
+    myZDT = ZonedDateTime.ofInstant(utcZDT.toInstant(), myzoneid);
+*/
     /*
     WRITE SOME FUNCTION TO GET CONTACT ID FROM CONTACT NAME
     public long getContactID(String contactName)
@@ -66,7 +129,7 @@ public interface GeneralFunctions {
     return rowsAffected;
 
     ************* EXTERNAL METHOD CALL ****************
-    int rowsAffected = XXXXX.insert(Cherries, 1);
+    int rowsAffected = "CLASS".insert(Cherries, 1);
     if(rowsAffected > 0){
     "INSERT SUCCESSFUL"
     } else {

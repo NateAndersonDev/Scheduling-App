@@ -1,7 +1,10 @@
 package Controller;
 
+import DAO.AppointmentsDao;
+import Main.main;
 import Model.Appointments;
 import Model.Contact;
+import Utilities.GeneralFunctions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,9 +26,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class SchedulerController {
     public Button MainModifyAppointmentBtn;
@@ -155,12 +163,21 @@ public class SchedulerController {
     @FXML
     private DatePicker MaineDatePicker;
 
-    public static Appointments appointments = new Appointments();
 
-    public void initialize(){
-        MainAppointmentTable.setItems(appointments.getApptlist());
-        MainAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>;
 
+    public void initialize() throws SQLException {
+        AppointmentsDao.pullAppointments();
+        MainAppointmentTable.setItems(AppointmentsDao.apptoblist);
+        MainAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        MainTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        MainLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        MainContactCol.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+        MainTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        MainStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        MainEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        MainCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        MainUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
+        MainDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
     }
     public void MainOpenContactSchedule(javafx.event.ActionEvent event) throws IOException{
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../View/ContactSchedule.fxml")));
@@ -180,6 +197,35 @@ public class SchedulerController {
         stage = (Stage) MainScenePane.getScene().getWindow();
         stage.close();
     }
+   public void addNewAppointment(ActionEvent event) throws IOException {
+        try{
+            int apptID = Integer.parseInt(MainAppointmentId.getText());// auto generate- get from sql.
+            String title = MainTitle.getText();
+            String location = MainLocation.getText();
+            String description = MainDescription.getText();
+            String type = MainTypeCombo.getValue().toString();
+            LocalDate date = MaineDatePicker.getValue();
+            LocalTime startTime = MainStartTimeCombo.getValue().toLocalTime();
+            LocalTime endTime = MainEndTimeCombo.getValue().toLocalTime();
+            int custId = MainCustomerIdCombo.getValue();
+            int userId = MainUserIdCombo.getValue();
+            String contactName = MainContactNameCombo.getValue();
+
+
+            Appointments appttoadd = new Appointments(apptID,title,description,location,type,startTime,endTime,custId,userId,)
+            int rowsAffected = AppointmentsDao.insert();
+
+            if(rowsAffected > 0){
+                "INSERT SUCCESSFUL"
+            } else {
+                "INSERT FAILED"
+            }
+        }
+
+
+    }
+
+
 }
 
 

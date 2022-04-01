@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public interface UserDao {
-   static boolean checkValidUserName(String userName) throws SQLException {
+   static boolean checkValidUserName(String userName) throws SQLException  {
         String sql = "SELECT 1 FROM USERS WHERE User_Name= ?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
         ps.setString(1, userName);
@@ -20,7 +20,10 @@ public interface UserDao {
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
         ps.setString(1, userName);
         ResultSet rs = ps.executeQuery();
-        return(Objects.equals(rs.getString("Password"), passWord));
+        while(rs.next()) {
+            return (Objects.equals(rs.getString("Password"), passWord));
+        }
+        return false;
     }
 }
 
