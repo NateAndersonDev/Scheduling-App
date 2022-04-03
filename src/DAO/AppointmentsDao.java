@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
@@ -24,30 +25,55 @@ public interface AppointmentsDao {
             String description = rs.getString("Description");
             String location  = rs.getString("Location");
             String type = rs.getString("Type");
-            Timestamp startTime = (rs.getTimestamp("Start"));
-            Timestamp endTime = (rs.getTimestamp("End"));
+            String startTime = GeneralFunctions.UTCTimeToUserTime(rs.getString("Start"));
+            String endTime = GeneralFunctions.UTCTimeToUserTime(rs.getString("End"));
             int customerID = rs.getInt("Customer_ID");
             int userID = rs.getInt("User_ID");
             int contactID = rs.getInt("Contact_ID");
-            Date date = rs.getDate("Start");
-            apptoblist.add(new Appointments(apptID,title,description,location,type,startTime,endTime,customerID,userID,contactID, date));
+
+            apptoblist.add(new Appointments(apptID,title,description,location,type,startTime,endTime,customerID,userID,contactID));
         }
     }
 
-    static int insert(Appointments appointments, LocalDate date, LocalTime time) throws SQLException{
-        String sql = "INSERT INTO APPOINTMENTS(Appointment_ID, Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID)" +
-                " VALUES(?,?,?,?,?,?,?,?,?,?)";
+    static int addNewAppt(Appointments appointments) throws SQLException{
+        String sql = "INSERT INTO APPOINTMENTS(Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID)" +
+                " VALUES(?,?,?,?,?,?,?,?,?)";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
-        ps.setInt(1, appointments.getAppointmentId());
-        ps.setString(2, appointments.getTitle());
-        ps.setString(3, appointments.getDescription());
-        ps.setString(4, appointments.getLocation());
-        ps.setString(5,appointments.getType());
-        ps.setTimestamp(6, appointments.getStart());
-        ps.setTimestamp(7,appointments.getEnd());
-        ps.setInt(8,appointments.getCustomerId());
-        ps.setInt(9,appointments.getUserID());
-        ps.setInt(10,appointments.getContactId());
+        ps.setString(1, appointments.getTitle());
+        ps.setString(2, appointments.getDescription());
+        ps.setString(3, appointments.getLocation());
+        ps.setString(4,appointments.getType());
+        ps.setString(5, appointments.getStart());
+        ps.setString(6,appointments.getEnd());
+        ps.setInt(7,appointments.getCustomerId());
+        ps.setInt(8,appointments.getUserID());
+        ps.setInt(9,appointments.getContactId());
+        int rowsAffected = ps.executeUpdate(); //return number of rows affected after inserting
+        return rowsAffected;
+    }
+    static int updateAppt(Appointments appointments) throws SQLException{
+        String sql = "UPDATE APPOINTMENTS " +
+                "SET Title = ?, " +
+                " Description = ?, " +
+                " Location = ?, " +
+                " Type = ?, " +
+                " Start = ?, " +
+                " End = ?, " +
+                " Customer_ID = ?, " +
+                " User_ID = ?, " +
+                " Contact_ID = ? " +
+                "WHERE Appointment_ID = ?;";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, appointments.getTitle());
+        ps.setString(2, appointments.getDescription());
+        ps.setString(3, appointments.getLocation());
+        ps.setString(4,appointments.getType());
+        ps.setString(5, appointments.getStart());
+        ps.setString(6,appointments.getEnd());
+        ps.setInt(7,appointments.getCustomerId());
+        ps.setInt(8,appointments.getUserID());
+        ps.setInt(9,appointments.getContactId());
+        ps.setInt(10,appointments.getAppointmentId());
         int rowsAffected = ps.executeUpdate(); //return number of rows affected after inserting
         return rowsAffected;
     }

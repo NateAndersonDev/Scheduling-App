@@ -19,8 +19,8 @@ public class Appointments {
     private String description;
     private String location;
     private String type;
-    private Timestamp start;
-    private Timestamp end;
+    private String start;
+    private String end;
     private int customerId;
     private int userID;
     private int contactId;
@@ -39,7 +39,7 @@ public class Appointments {
      * @param userID the user id
      * @param contactId the contact id
      */
-    public Appointments(int appointmentId, String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userID, int contactId, Date date) {
+    public Appointments(int appointmentId, String title, String description, String location, String type, String start, String end, int customerId, int userID, int contactId) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -50,6 +50,10 @@ public class Appointments {
         this.customerId = customerId;
         this.userID = userID;
         this.contactId = contactId;
+    }
+
+    public Appointments() {
+
     }
 
     /**
@@ -136,7 +140,7 @@ public class Appointments {
      *
      * @return the start time
      */
-    public Timestamp getStart() {
+    public String getStart() {
         return start;
     }
 
@@ -144,7 +148,7 @@ public class Appointments {
      *
      * @param start the start time of the appointment
      */
-    public void setStart(Timestamp start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
@@ -152,7 +156,7 @@ public class Appointments {
      *
      * @return the end
      */
-    public Timestamp getEnd() {
+    public String getEnd() {
         return end;
     }
 
@@ -160,7 +164,7 @@ public class Appointments {
      *
      * @param end the end time of the appointment
      */
-    public void setEnd(Timestamp end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

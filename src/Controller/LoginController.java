@@ -82,6 +82,8 @@ public class LoginController {
         if(UserDao.checkValidUserName(user.getUserName())){
             if(UserDao.checkMatchPw(user.getUserName(),user.getPassword())){
                 viewScheduler(event);
+            } else {
+                FxError.setVisible(true);
             }
         } else {
             FxError.setVisible(true);

@@ -1,6 +1,9 @@
 package Controller;
 
 import DAO.AppointmentsDao;
+import DAO.ContactDao;
+import DAO.CustomerDAO;
+import DAO.UserDao;
 import Main.main;
 import Model.Appointments;
 import Model.Contact;
@@ -24,20 +27,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.ThreadPoolExecutor;
+
 
 public class SchedulerController {
     public Button MainModifyAppointmentBtn;
-    public Button MainGetNewID;
     private Parent root;
     private Stage stage;
     ComboBox<String> getMainContactNameCombo;
@@ -83,10 +85,10 @@ public class SchedulerController {
     private TableColumn<Appointments, String> MainDescriptionCol;
 
     @FXML
-    private TableColumn<Appointments, Time> MainEndTimeCol;
+    private TableColumn<Appointments, LocalTime> MainEndTimeCol;
 
     @FXML
-    private ComboBox<Time> MainEndTimeCombo;
+    private ComboBox<LocalTime> MainEndTimeCombo;
 
     @FXML
     private Button MainExitButton;
@@ -122,10 +124,10 @@ public class SchedulerController {
     private ComboBox<Integer> MainReportTwoUserIdCombo;
 
     @FXML
-    private TableColumn<Appointments, Time> MainStartTimeCol;
+    private TableColumn<Appointments, LocalTime> MainStartTimeCol;
 
     @FXML
-    private ComboBox<Time> MainStartTimeCombo;
+    private ComboBox<LocalTime> MainStartTimeCombo;
 
     @FXML
     private TextField MainTitle;
@@ -163,9 +165,21 @@ public class SchedulerController {
     @FXML
     private DatePicker MaineDatePicker;
 
+    ObservableList<String> TypeComboList = FXCollections.observableArrayList(
+            "Planning Session",
+            "De-Briefing",
+            "Yell at Customer Time",
+            "Termination meeting",
+            "Cry about life at home"
+    );
+    ObservableList<LocalTime> PossibleStartTimesList = FXCollections.observableArrayList(GeneralFunctions.getStartTimes());
+    ObservableList<LocalTime> PossibeEndTimesList = FXCollections.observableArrayList(GeneralFunctions.getStartTimes());
+
 
 
     public void initialize() throws SQLException {
+
+        MainAppointmentTable.getItems().clear();
         AppointmentsDao.pullAppointments();
         MainAppointmentTable.setItems(AppointmentsDao.apptoblist);
         MainAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
@@ -178,7 +192,41 @@ public class SchedulerController {
         MainCustomerIdCol.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         MainUserIdCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
         MainDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        ContactDao.getContactNameList();
+        MainContactNameCombo.setItems(ContactDao.contactNameList);
+        MainTypeCombo.setItems(TypeComboList);
+        MainStartTimeCombo.setItems(PossibleStartTimesList);
+        MainEndTimeCombo.setItems(PossibeEndTimesList);
+        CustomerDAO.getCustomerIdList();
+        MainCustomerIdCombo.setItems(CustomerDAO.customerIDist);
+        UserDao.getUserIdList();
+        MainUserIdCombo.setItems(UserDao.userIDist);
+
+        MainAppointmentTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
+        {
+            if (newVal != null) {
+                MainAppointmentId.setText(String.valueOf(newVal.getAppointmentId()));
+                MainAppointmentId.setFocusTraversable(false);
+                MainTitle.setText(newVal.getTitle());
+                MainLocation.setText(newVal.getLocation());
+                MainTypeCombo.valueProperty().setValue(newVal.getType());
+                MaineDatePicker.valueProperty().setValue(GeneralFunctions.datePickerFromSelection(newVal.getStart()));
+                MainStartTimeCombo.valueProperty().setValue(GeneralFunctions.timeFromSelection(newVal.getStart()));
+                MainEndTimeCombo.valueProperty().setValue(GeneralFunctions.timeFromSelection(newVal.getEnd()));
+                MainCustomerIdCombo.valueProperty().setValue(newVal.getCustomerId());
+                MainUserIdCombo.valueProperty().set(newVal.getUserID());
+                MainDescription.setText(newVal.getDescription());
+                try {
+                    MainContactNameCombo.valueProperty().setValue(ContactDao.getContactName(newVal.getContactId()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
+
+
     public void MainOpenContactSchedule(javafx.event.ActionEvent event) throws IOException{
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../View/ContactSchedule.fxml")));
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -197,35 +245,64 @@ public class SchedulerController {
         stage = (Stage) MainScenePane.getScene().getWindow();
         stage.close();
     }
-   public void addNewAppointment(ActionEvent event) throws IOException {
-        try{
-            int apptID = Integer.parseInt(MainAppointmentId.getText());// auto generate- get from sql.
-            String title = MainTitle.getText();
-            String location = MainLocation.getText();
-            String description = MainDescription.getText();
-            String type = MainTypeCombo.getValue().toString();
-            LocalDate date = MaineDatePicker.getValue();
-            LocalTime startTime = MainStartTimeCombo.getValue().toLocalTime();
-            LocalTime endTime = MainEndTimeCombo.getValue().toLocalTime();
-            int custId = MainCustomerIdCombo.getValue();
-            int userId = MainUserIdCombo.getValue();
-            String contactName = MainContactNameCombo.getValue();
+   public void SaveBtnPress(ActionEvent event) throws IOException {
+           try {
+               LocalDate date = MaineDatePicker.getValue();
+               LocalTime startTime = MainStartTimeCombo.getValue();
+               LocalTime endTime = MainEndTimeCombo.getValue();
+               String contactName = MainContactNameCombo.getValue();
 
+               Appointments apptToAdd = new Appointments();
+               apptToAdd.setTitle(MainTitle.getText());
+               apptToAdd.setLocation(MainLocation.getText());
+               apptToAdd.setDescription(MainDescription.getText());
+               apptToAdd.setType(MainTypeCombo.getValue());
+               apptToAdd.setStart(GeneralFunctions.UserTimeToUTC(date, startTime));
+               apptToAdd.setEnd(GeneralFunctions.UserTimeToUTC(date, endTime));
+               apptToAdd.setContactId(ContactDao.getContactId(contactName));
+               apptToAdd.setCustomerId(MainCustomerIdCombo.getValue());
+               apptToAdd.setUserID(MainUserIdCombo.getValue());
 
-            Appointments appttoadd = new Appointments(apptID,title,description,location,type,startTime,endTime,custId,userId,)
-            int rowsAffected = AppointmentsDao.insert();
+               if(Objects.equals(MainAppointmentId.getText(), "Auto-Generated")) {
+                   int rowsAffected = AppointmentsDao.addNewAppt(apptToAdd);
 
-            if(rowsAffected > 0){
-                "INSERT SUCCESSFUL"
-            } else {
-                "INSERT FAILED"
-            }
-        }
+                   if (rowsAffected > 0) {
+                       GeneralFunctions.successMessage("Appointment Added", "The appointment has been successfully added");
+                       MainAppointmentTable.getItems().clear();
+                       AppointmentsDao.pullAppointments();
+                       MainAppointmentTable.setItems(AppointmentsDao.apptoblist);
 
+                   } else {
+                       GeneralFunctions.alertError("Failed", "Appointment not added, check fields for errors");
+                   }
+               } else{
+                   apptToAdd.setAppointmentId(Integer.parseInt(MainAppointmentId.getText()));
+                    int rowsAffected = AppointmentsDao.updateAppt(apptToAdd);
+                    if (rowsAffected > 0){
+                        GeneralFunctions.successMessage("Appointment Updated", "Appointment "+ apptToAdd.getAppointmentId() + " was updated Successfully");
+                        MainAppointmentTable.getItems().clear();
+                        AppointmentsDao.pullAppointments();
+                        MainAppointmentTable.setItems(AppointmentsDao.apptoblist);
+                    }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+   }
 
+   public void addNewAppointment(ActionEvent event) throws IOException{
+        MainAppointmentId.setText("Auto-Generated");
+       MainTitle.clear();
+       MainLocation.clear();
+       MainDescription.clear();
+       MainTypeCombo.valueProperty().set(null);
+       MaineDatePicker.valueProperty().set(null);
+       MainStartTimeCombo.valueProperty().set(null);
+       MainEndTimeCombo.valueProperty().set(null);
+       MainCustomerIdCombo.valueProperty().set(null);;
+       MainUserIdCombo.valueProperty().set(null);;
+       MainContactNameCombo.valueProperty().set(null);;
     }
-
-
 }
 
 

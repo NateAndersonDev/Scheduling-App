@@ -14,100 +14,83 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 
 public interface GeneralFunctions {
-
+    ZoneId utcZoneId = ZoneId.of("UTC");
     ZoneId myZoneId = ZoneId.systemDefault();
     LocalDateTime userDateTime = LocalDateTime.now(myZoneId);
 
 
     static void alertError(String Title, String Header) {
-        Alert general = new Alert(Alert.AlertType.ERROR);
-        general.setTitle(Title);
-        general.setHeaderText(Header);
-        general.show();
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle(Title);
+        error.setHeaderText(Header);
+        error.show();
     }
-  /* static String timeUTCtoLocal(Timestamp timestamp){
-        ZonedDateTime myZDT = ZonedDateTime.ofInstant(timestamp.toInstant(), myZoneId);
-        return (myZDT.toLocalDate() + " " + myZDT.toLocalTime());
-    }*/
+    static void successMessage(String Title, String Header){
+        Alert success = new Alert(Alert.AlertType.INFORMATION);
+        success.setTitle(Title);
+        success.setHeaderText(Header);
+        success.show();
 
-   /* static Timestamp (LocalDate date, LocalTime time){
-        LocalDateTime ldt = LocalDateTime.of(date, time);
-        ZonedDateTime zdt = ZonedDateTime.of(ldt, myZoneId);
-        ZoneId utcZoneId = ZoneId.of("UTC");
-        ZonedDateTime utcZDT = ZonedDateTime.ofInstant(zdt.toInstant(), utcZoneId);
-        return utcZDT;
-    }*/
-    static void getZonedDateTime(LocalDate date, LocalTime time){
-        LocalDateTime ldt = LocalDateTime.of(date, time);
-        ZonedDateTime zdt = ZonedDateTime.of(ldt, myZoneId);
-        System.out.println(zdt);
     }
+    static List<LocalTime> getStartTimes(){
+        //eastern timezone offset= -04:00
+        Integer userOffset = myZoneId.getRules().getOffset(Instant.now()).getTotalSeconds();
+        ZoneId business = ZoneId.of("America/New_York");
+        Integer businessOffset = business.getRules().getOffset(Instant.now()).getTotalSeconds();
+        int diff = (businessOffset-userOffset) /3600;
 
-    /*  static String timeLocalToEastern(LocalDate date, LocalTime time){
-        LocalDateTime ldt = LocalDateTime.of(date, time);
-        ZonedDateTime zdt = ZonedDateTime.of(ldt, myZoneId);
-        ZoneId eastZoneId = ZoneId.of("US/Eastern");
-        ZonedDateTime eastZDT = ZonedDateTime.ofInstant(zdt.toInstant(), eastZoneId);
-    }*/
+        String[] mins = {"00", "15", "30", "45"};
+        List<LocalTime> times = new ArrayList<LocalTime>();
 
-
-
-
-//------------ Time Zone Stuff ---------------/
-/*
-    ZoneId.getAvailableZoneIds().stream.sorted.forEach(system.out::prinln);
-    ------prints availabe zone ids
-
-    ZoneID.Systemdefault
-    ----- gets user's zone ID
-
-    ZoneId.getAvailableZoneIds().stream.filter(z -> z.contains("America").forEach(system.out::prinln);
-    -------lambda function that filters list of zone ID to america timezones.
-
-    date picker returns local date format
-
-    LocalDate myLD = LocalDate.of(2020,10,11);
-
-    set combobox to local time, give list of available local time objects
-
-    LocalTime myLT = LocalTime.of(22, 0); --creates local time object
-    LocalDateTime myLDT = LocalDateTime.of(myLD,myLT); ---creates local date/time object
-    ZoneID myzoneid = ZoneId.systemDefault();
-    ZoneDateTime myZDT = ZoneDateTime.of(myLDT, myzoneid) --creates zonedatetime object
-
-    Extract components:
-    myZDT.toLocalDate --display's just the date
-    myZDT.toLocalTime --displays just the time
-
-    database time format = (myZDT.tolocalDate.toString() + " " + myZDT.toLocalTime.toString()) -- insert this into database
-
-    ______________HOW TO CONVERT TIMEZONES_______________________
-    -----converts usertime into UTC time--------------(myZDT -> utcZDT)---------------
-    USER TIME = myZDT
-    ZoneID utcZoneId = ZoneID.of("UTC);
-    ZonedDateTime utcZDT = ZonedDateTime.ofInstant(myZDT.toInstant(), utcZoneId);
-
-    -------converts UTC time to usertime ---------------(utcZDT -> myZDT)------------
-
-    myZDT = ZonedDateTime.ofInstant(utcZDT.toInstant(), myzoneid);
-*/
-    /*
-    WRITE SOME FUNCTION TO GET CONTACT ID FROM CONTACT NAME
-    public long getContactID(String contactName)
+        for(int i=8-diff; i<22-diff; i++){
+            for(int j =0; j<4; j++){
+                String time = i + ":" + mins[j];
+                if(i<10){
+                    time = "0" +time;
+                }
+                times.add(LocalTime.parse(time));
+            }
+        }
+        return (times);
     }
 
-    WRITE SOME FUNCTION TO GET CONTACT NAME FROM CONTACT ID
+    static String UserTimeToUTC(LocalDate date, LocalTime time){
+        LocalDateTime ldt = LocalDateTime.of(date, time);
+        ZonedDateTime zdt = ZonedDateTime.of(ldt, myZoneId);
+        ZonedDateTime utczdt = ZonedDateTime.ofInstant(zdt.toInstant(), utcZoneId);
+        return (utczdt.toLocalDate().toString() + " " + utczdt.toLocalTime().toString());
+    }
 
-    Function that takes First and Second level country data and turn it into a Division ID & Vice Versa.
+    static String UTCTimeToUserTime(String dbUTCTime){
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
+        LocalDateTime ldt =  LocalDateTime.parse(dbUTCTime, df);
+        ZonedDateTime utczdt = ZonedDateTime.of(ldt,utcZoneId);
+        ZonedDateTime myzdt = ZonedDateTime.ofInstant(utczdt.toInstant(), myZoneId);
+        return (myzdt.toLocalDate().toString() + " " + myzdt.toLocalTime().toString());
+    }
+    static LocalDate datePickerFromSelection(String datetime){
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
+        LocalDateTime ldt = LocalDateTime.parse(datetime, df);
+        return ldt.toLocalDate();
+    }
+   static LocalTime timeFromSelection(String datetime){
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
+        LocalDateTime ldt = LocalDateTime.parse(datetime, df);
+        return ldt.toLocalTime();
+    }
 
-    Functions that converts between all the timezones. UTC -> Local, UTC -> Eastern, System -> UTC etc.
-    This will save you lots of time and headache. Make these, test these and you will save the hardest part of your project.
-    Use LocalDateTime objects and ZoneID’s to do this. There are resources online.
- */
+
+
+    //Function that takes First and Second level country data and turn it into a Division ID & Vice Versa.
+
 
 }
 

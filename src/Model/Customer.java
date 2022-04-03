@@ -4,12 +4,14 @@ package Model;
  * Customer class
  */
 public class Customer {
-    long customerId;
+    int customerId;
     String customerName;
     String customerAddress;
     String customerPostalCode;
     String customerPhone;
-    Long customerDivisionId;
+    int customerDivisionId;
+    String country;
+    String division;
 
     /**
      * Constructor for the customer object
@@ -20,13 +22,35 @@ public class Customer {
      * @param customerPhone is the customer's phone number
      * @param customerDivisionId is the customer's division ID
      */
-    public Customer(long customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, Long customerDivisionId) {
+    public Customer(int customerId, String customerName, String customerAddress, String customerPostalCode, String customerPhone, int customerDivisionId, String country, String division) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
         this.customerPostalCode = customerPostalCode;
         this.customerPhone = customerPhone;
         this.customerDivisionId = customerDivisionId;
+        this.country = country;
+        this.division = division;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getDivision() {
+        return division;
+    }
+
+    public void setDivision(String division) {
+        this.division = division;
     }
 
     /**]
@@ -41,7 +65,7 @@ public class Customer {
      *
      * @param customerId sets customer id
      */
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
@@ -113,7 +137,7 @@ public class Customer {
      *
      * @return get customer division id
      */
-    public Long getCustomerDivisionId() {
+    public int getCustomerDivisionId() {
         return customerDivisionId;
     }
 
@@ -121,7 +145,7 @@ public class Customer {
      *
      * @param customerDivisionId set customer division ID
      */
-    public void setCustomerDivisionId(Long customerDivisionId) {
+    public void setCustomerDivisionId(int customerDivisionId) {
         this.customerDivisionId = customerDivisionId;
     }
 }

@@ -3,6 +3,7 @@ package Main;
 
 import DAO.DBConnection;
 import Model.Appointments;
+import Utilities.GeneralFunctions;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,11 +21,9 @@ public class main extends Application {
 
 
     public static void main(String[] args) {
-
         DBConnection.openConnection();
-
         launch(args);
-       DBConnection.closeConnection();
+        DBConnection.closeConnection();
     }
 
 

@@ -4,16 +4,16 @@ public class Countries {
     private int County_id;
     private String Country;
 
-    public Countries(int county_id, String country) {
-        County_id = county_id;
+    public Countries(int country_id, String country) {
+        County_id = country_id;
         Country = country;
     }
 
-    public int getCounty_id() {
+    public int getCountry_id() {
         return County_id;
     }
 
-    public void setCounty_id(int county_id) {
+    public void setCountry_id(int county_id) {
         County_id = county_id;
     }
 
