@@ -48,8 +48,7 @@ public interface AppointmentsDao {
         ps.setInt(7,appointments.getCustomerId());
         ps.setInt(8,appointments.getUserID());
         ps.setInt(9,appointments.getContactId());
-        int rowsAffected = ps.executeUpdate(); //return number of rows affected after inserting
-        return rowsAffected;
+        return ps.executeUpdate();
     }
     static int updateAppt(Appointments appointments) throws SQLException{
         String sql = "UPDATE APPOINTMENTS " +
@@ -74,17 +73,15 @@ public interface AppointmentsDao {
         ps.setInt(8,appointments.getUserID());
         ps.setInt(9,appointments.getContactId());
         ps.setInt(10,appointments.getAppointmentId());
-        int rowsAffected = ps.executeUpdate(); //return number of rows affected after inserting
-        return rowsAffected;
+        return ps.executeUpdate();
+    }
+
+    static int deleteAppt(int AppointmentId) throws SQLException{
+        String sql = "DELETE FROM Appointments WHERE Customer_ID= ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setInt(1, AppointmentId);
+        return ps.executeUpdate();
     }
 }
-/*
-    ************* EXTERNAL METHOD CALL ****************
-        int rowsAffected = XXXXX.insert(Cherries, 1);
-        if(rowsAffected > 0){
-            "INSERT SUCCESSFUL"
-        } else {
-            "INSERT FAILED"
-        }
-    }
-}*/
+
+

@@ -181,9 +181,28 @@ public class CustomerController {
                e.printStackTrace();
             }
         }
-    public void CustomerDeleteButtonRequest(){
-            System.out.println("Delete Press");
+
+    public void CustomerDeleteButtonRequest() throws SQLException {
+        if (!Objects.equals(CustomerFormID.getText(), "")) {
+        Customer custToDelete = new Customer();
+        custToDelete.setCustomerId(Integer.parseInt(CustomerFormID.getText()));
+
+            if (GeneralFunctions.confirmationMessage("Confirm Delete", "Appointments with this customer will also be deleted",
+                    "Confirm you want to delete customer with ID of " + custToDelete.getCustomerId())) {
+                int rowsAffected = CustomerDAO.deleteCustomer(custToDelete);
+                if (rowsAffected > 0) {
+                    GeneralFunctions.successMessage("Customer Deleted", "The Customer and their appointments have been successfully deleted");
+                    CustomerFormTable.getItems().clear();
+                    CustomerDAO.pullCustomers();
+                    CustomerFormTable.setItems(CustomerDAO.customerList);
+                } else {
+                    GeneralFunctions.alertError("Failed", "Customer and or appointments were not deleted");
+                }
+            }
+        } else {
+            GeneralFunctions.alertError("No customer Selected", "Please select customer to delete");
         }
+    }
 
     public void CustomerAddCustBtnPress() throws IOException{
         CustomerFormID.clear();

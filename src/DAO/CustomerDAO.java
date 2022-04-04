@@ -69,4 +69,11 @@ public interface CustomerDAO {
         return ps.executeUpdate();
     }
 
+    static int deleteCustomer(Customer customer) throws SQLException {
+        AppointmentsDao.deleteAppt(customer.getCustomerId());
+        String sql = "DELETE FROM CUSTOMERS WHERE Customer_ID= ?";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql); //prepared Statement
+        ps.setInt(1, customer.getCustomerId());
+        return ps.executeUpdate();
+    }
 }

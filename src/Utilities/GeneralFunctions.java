@@ -10,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.*;
@@ -19,10 +21,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.TimeZone;
 
 
 public interface GeneralFunctions {
@@ -42,7 +42,22 @@ public interface GeneralFunctions {
         success.setTitle(Title);
         success.setHeaderText(Header);
         success.show();
+    }
+    static boolean confirmationMessage(String title, String header, String context) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle(title);
+        confirmation.setHeaderText(header);
+        confirmation.setContentText(context);
 
+        Optional<ButtonType> btn = confirmation.showAndWait();
+        if(btn.isPresent()) {
+            if (btn.get() == ButtonType.OK) {
+                return true;
+            } else if (btn.get() == ButtonType.CANCEL) {
+                return  false;
+            }
+        }
+        return false;
     }
     static List<LocalTime> getStartTimes(){
         //eastern timezone offset= -04:00
