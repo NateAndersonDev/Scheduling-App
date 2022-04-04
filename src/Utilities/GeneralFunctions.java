@@ -100,6 +100,16 @@ public interface GeneralFunctions {
             });
         return filteredList;
         }
+
+    static int getDivIdFromInput(String countryName, String state) {
+        for (Division div : DivisionDAO.DivisionsList) {
+            if ((div.getCountryName().equals(countryName)) && (div.getDivisionName().equals(state))) {
+                return div.getDivisionId();
+            }
+        }
+
+        return -1;
+    }
     }
 
 

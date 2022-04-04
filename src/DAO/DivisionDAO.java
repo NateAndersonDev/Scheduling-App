@@ -44,6 +44,7 @@ public interface DivisionDAO {
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) { //keeps going if there is data in the rs.
+            int divisionId = rs.getInt("Division_ID");
             String countryName = null;
             String divisionName = rs.getString("Division");
             int countryId = rs.getInt("COUNTRY_ID");
@@ -54,7 +55,7 @@ public interface DivisionDAO {
                 } else if(countryId == 3){
                     countryName = "Canada";
                 }
-            DivisionsList.add(new Division(divisionName, countryName));
+            DivisionsList.add(new Division(divisionName, countryName, divisionId));
             }
 
         }

@@ -33,6 +33,10 @@ public class Customer {
         this.division = division;
     }
 
+    public Customer() {
+
+    }
+
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
@@ -57,7 +61,7 @@ public class Customer {
      *
      * @return get the customer id
      */
-    public long getCustomerId() {
+    public int getCustomerId() {
         return customerId;
     }
 

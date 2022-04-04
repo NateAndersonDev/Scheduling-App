@@ -146,9 +146,39 @@ public class CustomerController {
     }
 
 
-    public void CustomerSaveBtnPress(){
+    public void CustomerSaveBtnPress() {
             try{
+            Customer custToAdd = new Customer();
+            custToAdd.setCustomerName(CustomerFormName.getText());
+            custToAdd.setCustomerPhone(CustomerFormPhone.getText());
+            custToAdd.setCustomerDivisionId(GeneralFunctions.getDivIdFromInput(CustomerFormCountry.getValue(), CustomerFormState.getValue()));
+            custToAdd.setCustomerPostalCode(CustomerFormPostal.getText());
+            custToAdd.setCustomAddress(CustomerFormStreet.getText());
 
+            if(Objects.equals(CustomerFormID.getText(), "Auto-Generated")){
+                int rowsAffected = CustomerDAO.addNewCustomer(custToAdd);
+                if (rowsAffected > 0) {
+                    GeneralFunctions.successMessage("Customer Added", "The customer has been successfully added");
+                    CustomerFormTable.getItems().clear();
+                    CustomerDAO.pullCustomers();
+                    CustomerFormTable.setItems(CustomerDAO.customerList);
+
+                } else {
+                    GeneralFunctions.alertError("Failed", "Customer not added, check fields for errors");
+                }
+            } else {
+                custToAdd.setCustomerId(Integer.parseInt(CustomerFormID.getText()));
+                int rowsAffected = CustomerDAO.updateCustomer(custToAdd);
+                if (rowsAffected > 0) {
+                    GeneralFunctions.successMessage("Customer Updated", "Customer with Id of:  " + custToAdd.getCustomerId() + " was updated Successfully");
+                    CustomerFormTable.getItems().clear();
+                    CustomerDAO.pullCustomers();
+                    CustomerFormTable.setItems(CustomerDAO.customerList);
+                }
+            }
+
+            } catch (SQLException e) {
+               e.printStackTrace();
             }
         }
     public void CustomerDeleteButtonRequest(){
@@ -156,8 +186,8 @@ public class CustomerController {
         }
 
     public void CustomerAddCustBtnPress() throws IOException{
-        CustomerFormID.setText("Auto-Generated");
         CustomerFormID.clear();
+        CustomerFormID.setText("Auto-Generated");
         CustomerFormName.clear();
         CustomerFormPhone.clear();
         CustomerFormStreet.clear();

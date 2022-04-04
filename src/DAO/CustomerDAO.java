@@ -40,5 +40,33 @@ public interface CustomerDAO {
             customerList.add(new Customer(customerID,customerName,customerAddress,customerPostalCode,customerPhone,customerDivisionID,country,division));
         }
     }
+    static int addNewCustomer(Customer customer) throws SQLException{
+        String sql = "INSERT INTO CUSTOMERS(Customer_Name, Address, Postal_Code, Phone, Division_ID)"+
+                " VALUES(?,?,?,?,?)";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, customer.getCustomerName());
+        ps.setString(2,customer.getCustomerAddress());
+        ps.setString(3,customer.getCustomerPostalCode());
+        ps.setString(4,customer.getCustomerPhone());
+        ps.setInt(5,customer.getCustomerDivisionId());
+        return ps.executeUpdate();
+    }
+    static int updateCustomer(Customer customer) throws SQLException{
+        String sql = "UPDATE CUSTOMERS " +
+                "SET Customer_Name = ?, " +
+                " Address = ?, " +
+                " Postal_Code = ?, " +
+                " Phone = ?, " +
+                " Division_ID = ? " +
+                "WHERE Customer_ID = ?;";
+        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        ps.setString(1, customer.getCustomerName());
+        ps.setString(2,customer.getCustomerAddress());
+        ps.setString(3,customer.getCustomerPostalCode());
+        ps.setString(4,customer.getCustomerPhone());
+        ps.setInt(5,customer.getCustomerDivisionId());
+        ps.setInt(6,customer.getCustomerId());
+        return ps.executeUpdate();
+    }
 
 }
