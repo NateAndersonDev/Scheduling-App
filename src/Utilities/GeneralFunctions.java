@@ -1,6 +1,10 @@
 package Utilities;
 
 import DAO.DBConnection;
+import DAO.DivisionDAO;
+import Model.Division;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -87,12 +91,22 @@ public interface GeneralFunctions {
         return ldt.toLocalTime();
     }
 
+    static ObservableList<String> divisionsFromDivisionList(String countryName){
+        ObservableList<String> filteredList = FXCollections.observableArrayList();
+        DivisionDAO.DivisionsList.forEach(Division -> {
+            if(Objects.equals(Division.getCountryName(), countryName)){
+                filteredList.add(Division.getDivisionName());
+            }
+            });
+        return filteredList;
+        }
+    }
 
 
     //Function that takes First and Second level country data and turn it into a Division ID & Vice Versa.
 
 
-}
+
 
 //executeUpdate() --returns number of rows affected by the Delete, Insert, or Update SQL command.
 //IF a column auto-increments, do not include column in the statement.

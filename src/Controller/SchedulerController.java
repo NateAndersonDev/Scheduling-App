@@ -173,13 +173,14 @@ public class SchedulerController {
             "Cry about life at home"
     );
     ObservableList<LocalTime> PossibleStartTimesList = FXCollections.observableArrayList(GeneralFunctions.getStartTimes());
-    ObservableList<LocalTime> PossibeEndTimesList = FXCollections.observableArrayList(GeneralFunctions.getStartTimes());
+    ObservableList<LocalTime> PossibleEndTimesList = FXCollections.observableArrayList(GeneralFunctions.getStartTimes());
 
 
 
     public void initialize() throws SQLException {
 
         MainAppointmentTable.getItems().clear();
+        AppointmentsDao.apptoblist.clear();
         AppointmentsDao.pullAppointments();
         MainAppointmentTable.setItems(AppointmentsDao.apptoblist);
         MainAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
@@ -197,7 +198,7 @@ public class SchedulerController {
         MainContactNameCombo.setItems(ContactDao.contactNameList);
         MainTypeCombo.setItems(TypeComboList);
         MainStartTimeCombo.setItems(PossibleStartTimesList);
-        MainEndTimeCombo.setItems(PossibeEndTimesList);
+        MainEndTimeCombo.setItems(PossibleEndTimesList);
         CustomerDAO.getCustomerIdList();
         MainCustomerIdCombo.setItems(CustomerDAO.customerIDist);
         UserDao.getUserIdList();

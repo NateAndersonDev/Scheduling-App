@@ -3,6 +3,8 @@ package Controller;
 import DAO.*;
 import Model.Customer;
 import Utilities.GeneralFunctions;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,7 +28,7 @@ import java.util.Objects;
 public class CustomerController {
 
     @FXML
-    private Button CustomerFormCancelBtn;
+    private Button CustomerAddCustBtn;
 
     @FXML
     private ComboBox<String> CustomerFormCountry;
@@ -43,8 +45,6 @@ public class CustomerController {
     @FXML
     private TableColumn<Customer, Integer> CustomerFormIdCol;
 
-    @FXML
-    private RadioButton CustomerFormModifyBtn;
 
     @FXML
     private TextField CustomerFormName;
@@ -82,11 +82,14 @@ public class CustomerController {
     @FXML
     private TableView<Customer> CustomerFormTable;
 
-    @FXML
-    private RadioButton CustomerFromAddNewBtn;
+
+    ObservableList<String> countryList  = FXCollections.observableArrayList(
+            "U.S.",
+            "UK",
+            "Canada"
+    );
 
     public void ReturnToMain(javafx.event.ActionEvent event) throws IOException {
-
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../view/Scheduler.fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene MainFormScene = new Scene(root);
@@ -94,6 +97,9 @@ public class CustomerController {
         stage.show();
     }
     public void initialize() throws SQLException {
+        CustomerFormTable.getItems().clear();
+        CustomerDAO.customerList.clear();
+        DivisionDAO.pullDivisionList();
 
         CustomerFormTable.getItems().clear();
         CustomerDAO.pullCustomers();
@@ -105,42 +111,62 @@ public class CustomerController {
         CustomerFormStateCol.setCellValueFactory(new PropertyValueFactory<>("division"));
         CustomerFormPostalCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
         CustomerFormStreetCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+
+
+        CustomerFormCountry.setItems(countryList);
+
+        CustomerFormCountry.valueProperty().addListener((obs, oldVal, newVal) ->
+        {
+            if (newVal != null) {
+                {
+                    switch (newVal) {
+                        case "U.S." -> CustomerFormState.setItems(GeneralFunctions.divisionsFromDivisionList("U.S."));
+                        case "UK" -> CustomerFormState.setItems(GeneralFunctions.divisionsFromDivisionList("UK"));
+                        case "Canada" -> CustomerFormState.setItems(GeneralFunctions.divisionsFromDivisionList("Canada"));
+                    }
+                }
+            }
+        });
+
+        CustomerFormTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
+        {
+            if (newVal != null) {
+                System.out.println(newVal);
+                CustomerFormID.setText(String.valueOf(newVal.getCustomerId()));
+                CustomerFormID.setFocusTraversable(false);
+                CustomerFormName.setText(newVal.getCustomerName());
+                CustomerFormPhone.setText(newVal.getCustomerPhone());
+                CustomerFormStreet.setText(newVal.getCustomerAddress());
+                CustomerFormPostal.setText(newVal.getCustomerPostalCode());
+                CustomerFormCountry.valueProperty().setValue(newVal.getCountry());
+                CustomerFormState.valueProperty().setValue(newVal.getDivision());
+
+            }
+        });
     }
-    public void CustomerSaveBtnPress(){};
-    public void CustomerDeleteButtonRequest(){};
-    public void CustomerAddCustBtnPress(){};
+
+
+    public void CustomerSaveBtnPress(){
+            try{
+
+            }
+        }
+    public void CustomerDeleteButtonRequest(){
+            System.out.println("Delete Press");
+        }
+
+    public void CustomerAddCustBtnPress() throws IOException{
+        CustomerFormID.setText("Auto-Generated");
+        CustomerFormID.clear();
+        CustomerFormName.clear();
+        CustomerFormPhone.clear();
+        CustomerFormStreet.clear();
+        CustomerFormPostal.clear();
+        CustomerFormCountry.valueProperty().set(null);
+        CustomerFormState.getItems().clear();
+    }
+
 }
-//
-//        ContactDao.getContactNameList();
-//        MainContactNameCombo.setItems(ContactDao.contactNameList);
-//        MainTypeCombo.setItems(TypeComboList);
-//        MainStartTimeCombo.setItems(PossibleStartTimesList);
-//        MainEndTimeCombo.setItems(PossibeEndTimesList);
-//        CustomerDAO.getCustomerIdList();
-//        MainCustomerIdCombo.setItems(CustomerDAO.customerIDist);
-//        UserDao.getUserIdList();
-//        MainUserIdCombo.setItems(UserDao.userIDist);
-//
-//        CustomerFormTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-//        {
-//            if (newVal != null) {
-//                CustomerFormID.setText(String.valueOf(newVal.getCustomerId()));
-//                CustomerFormID.setFocusTraversable(false);
-//                CustomerFormName.setText(newVal.getCustomerName());
-//                CustomerFormPhone.setText(newVal.getCustomerPhone());
-//                CustomerFormStreet.setText(newVal.getCustomerAddress());
-//                CustomerFormPostal.setText(newVal.getCustomerPostalCode());
-//                MainStartTimeCombo.valueProperty().setValue(GeneralFunctions.timeFromSelection(newVal.getStart()));
-//                MainEndTimeCombo.valueProperty().setValue(GeneralFunctions.timeFromSelection(newVal.getEnd()));
-//                MainCustomerIdCombo.valueProperty().setValue(newVal.getCustomerId());
-//                MainUserIdCombo.valueProperty().set(newVal.getUserID());
-//                MainDescription.setText(newVal.getDescription());
-//                try {
-//                    MainContactNameCombo.valueProperty().setValue(ContactDao.getContactName(newVal.getContactId()));
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+
 
 

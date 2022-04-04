@@ -25,8 +25,8 @@
       <Text layoutX="71.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" />
       <Text layoutX="68.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Address :" />
       <Text layoutX="113.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
-      <ComboBox fx:id="CustomerFormCountryCombo" layoutX="168.0" layoutY="242.0" prefWidth="150.0" />
-      <ComboBox fx:id="CustomerFormStateCombo" layoutX="168.0" layoutY="274.0" prefWidth="150.0" />
+      <ComboBox fx:id="CustomerFormCountry" layoutX="168.0" layoutY="242.0" prefWidth="150.0" />
+      <ComboBox fx:id="CustomerFormState" layoutX="168.0" layoutY="274.0" prefWidth="150.0" />
       <Text layoutX="76.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State/Provence" />
       <Text layoutX="92.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code" />
       <TextField fx:id="CustomerFormPostal" layoutX="168.0" layoutY="305.0" prefHeight="25.0" prefWidth="109.0" />
