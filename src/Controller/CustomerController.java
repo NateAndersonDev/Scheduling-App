@@ -100,6 +100,11 @@ public class CustomerController {
 
     /**
      * Initialize function.
+     *
+     * JUSTIFICATION FOR LAMBDA EXPRESSIONS:
+     * I wanted some behavior, i.e. set certain items in a combo box based on the country chosen
+     * without creating a class, such as a "country" class, that would implement the method (and therefor am able to get the result of the behavior)
+     *
      * This function populates the table, creates a lambda function listener to do division filtering based on country, and another listener to populate the text fields
      * with values from the selection from the table.
      * @throws SQLException SQLException
