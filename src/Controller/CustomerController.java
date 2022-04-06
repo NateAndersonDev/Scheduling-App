@@ -12,7 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
+
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -20,24 +20,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Objects;
 
+/**
+ * Customer Controller class declaration
+ */
 public class CustomerController {
 
-    @FXML
-    private Button CustomerAddCustBtn;
 
     @FXML
     private ComboBox<String> CustomerFormCountry;
 
     @FXML
     private TableColumn<Customer, String> CustomerFormCountryCol;
-
-    @FXML
-    private Button CustomerFormDeleteButton;
 
     @FXML
     private TextField CustomerFormID;
@@ -65,9 +63,6 @@ public class CustomerController {
     private TableColumn<Customer, String> CustomerFormPostalCol;
 
     @FXML
-    private Button CustomerFormSaveBtn;
-
-    @FXML
     private ComboBox<String> CustomerFormState;
 
     @FXML
@@ -89,6 +84,12 @@ public class CustomerController {
             "Canada"
     );
 
+    /**
+     * Return to main function.
+     * This function returns the user to the main Scheduler scene.
+     * @param event user presses the button to return to the main scene
+     * @throws IOException IOException
+     */
     public void ReturnToMain(javafx.event.ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../view/Scheduler.fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -96,6 +97,13 @@ public class CustomerController {
         stage.setScene(MainFormScene);
         stage.show();
     }
+
+    /**
+     * Initialize function.
+     * This function populates the table, creates a lambda function listener to do division filtering based on country, and another listener to populate the text fields
+     * with values from the selection from the table.
+     * @throws SQLException SQLException
+     */
     public void initialize() throws SQLException {
         CustomerFormTable.getItems().clear();
         CustomerDAO.customerList.clear();
@@ -131,7 +139,6 @@ public class CustomerController {
         CustomerFormTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
         {
             if (newVal != null) {
-                System.out.println(newVal);
                 CustomerFormID.setText(String.valueOf(newVal.getCustomerId()));
                 CustomerFormID.setFocusTraversable(false);
                 CustomerFormName.setText(newVal.getCustomerName());
@@ -144,7 +151,6 @@ public class CustomerController {
             }
         });
     }
-
 
     public void CustomerSaveBtnPress() {
             try{
@@ -177,10 +183,14 @@ public class CustomerController {
                 }
             }
 
+            } catch (SQLIntegrityConstraintViolationException | NullPointerException e){
+                GeneralFunctions.alertError("Fields are empty", "Please ensure all fields have content");
             } catch (SQLException e) {
                e.printStackTrace();
+            } catch (NumberFormatException e){
+                GeneralFunctions.alertError("Please click 'Add New Customer' button", "User must generate new customer ID by clicking the 'Add New Customer' button before trying to save the customer");
             }
-        }
+    }
 
     public void CustomerDeleteButtonRequest() throws SQLException {
         if (!Objects.equals(CustomerFormID.getText(), "")) {

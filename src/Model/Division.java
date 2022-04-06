@@ -1,42 +1,47 @@
 package Model;
 
+/**
+ * Division class declaration.
+ */
 public class Division {
     String divisionName;
     String countryName;
     int divisionId;
 
+    /**
+     * Division constructor.
+     * @param divisionName Division name
+     * @param countryName Country Name
+     * @param divisionId Division Id
+     */
     public Division(String divisionName, String countryName, int divisionId) {
         this.divisionName = divisionName;
         this.countryName = countryName;
         this.divisionId = divisionId;
     }
 
+    /**
+     * Getter for Division Id.
+     * @return division ID
+     */
     public int getDivisionId() {
         return divisionId;
     }
 
-    public void setDivisionId(int divisionId) {
-        this.divisionId = divisionId;
-    }
-
-
-    public void setCountryCode(String countryCode) {
-        this.countryName = countryCode;
-    }
-
+    /**
+     * getter for division name.
+     * @return division name
+     */
     public String getDivisionName() {
         return divisionName;
     }
 
-    public void setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
-    }
-
+    /**
+     * Getter for country Name.
+     * @return country name.
+     */
     public String getCountryName() {
         return countryName;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
 }

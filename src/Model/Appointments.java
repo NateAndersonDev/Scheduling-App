@@ -1,14 +1,6 @@
 package Model;
 
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
 
 /**
  * Appointment class
@@ -25,7 +17,6 @@ public class Appointments {
     private int userID;
     private int contactId;
     private Date date;
-    //private ObservableList<Appointments> oblist = FXCollections.observableArrayList();
 /**
      * Appointment class constructor
      * @param appointmentId the appointmentID
@@ -52,12 +43,14 @@ public class Appointments {
         this.contactId = contactId;
     }
 
+    /**
+     * Empty Appointments constructor.
+     */
     public Appointments() {
-
     }
 
     /**
-     *
+     * Getter for the ID of the appointment.
      * @return the appointment id
      */
     public int getAppointmentId() {
@@ -65,7 +58,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Setter for hte Id of the appointment.
      * @param appointmentId the appointment id of the meeting
      */
     public  void setAppointmentId(int appointmentId) {
@@ -73,7 +66,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Getter for the title of the appointment.
      * @return the title
      */
     public String getTitle() {
@@ -81,7 +74,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Setter for the title of the appointment.
      * @param title the title of the appointment
      */
     public void setTitle(String title) {
@@ -89,7 +82,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Getter for the description of the appointment.
      * @return the description
      */
     public String getDescription() {
@@ -97,7 +90,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Setter for the description of the appointment.
      * @param description the description of the appointment
      */
     public void setDescription(String description) {
@@ -105,7 +98,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Getter for the location of the appointment.
      * @return the location
      */
     public String getLocation() {
@@ -113,7 +106,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Setter for the location of the appointment.
      * @param location the location of the appointment
      */
     public void setLocation(String location) {
@@ -121,7 +114,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Getter for the type of the appointment.
      * @return the type
      */
     public String getType() {
@@ -129,7 +122,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Setter for the type of teh appointment.
      * @param type the type of the appointment
      */
     public void setType(String type) {
@@ -137,39 +130,39 @@ public class Appointments {
     }
 
     /**
-     *
-     * @return the start time
+     * Getter for start datetime.
+     * @return the start date time
      */
     public String getStart() {
         return start;
     }
 
     /**
-     *
-     * @param start the start time of the appointment
+     * Setter for start date time.
+     * @param start the start of the appointment
      */
     public void setStart(String start) {
         this.start = start;
     }
 
     /**
-     *
-     * @return the end
+     * Getter for end datetime.
+     * @return the end of the appointment
      */
     public String getEnd() {
         return end;
     }
 
     /**
-     *
-     * @param end the end time of the appointment
+     * Setter for end date time.
+     * @param end the end of the appointment
      */
     public void setEnd(String end) {
         this.end = end;
     }
 
     /**
-     *
+     * Getter for customer id.
      * @return the customer ID
      */
     public int getCustomerId() {
@@ -177,7 +170,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Setter for customer id.
      * @param customerId the customer id of the appointment
      */
     public void setCustomerId(int customerId) {
@@ -185,7 +178,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Getter for user id.
      * @return the user ID
      */
     public int getUserID() {
@@ -193,7 +186,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Setter for user id.
      * @param userID the user ID of the appointment
      */
     public void setUserID(int userID) {
@@ -201,7 +194,7 @@ public class Appointments {
     }
 
     /**
-     *
+     * Getter for contact id.
      * @return the contact ID
      */
     public int getContactId() {
@@ -209,15 +202,12 @@ public class Appointments {
     }
 
     /**
-     *
-     * @param contactId the contact ID of the appointment
+     * Setter for contact id.
+     * @param contactId contact ID of the appointment
      */
     public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 
-  /*  public ObservableList<Appointments> getOblist() {
-        return oblist;
-    }*/
 }
 

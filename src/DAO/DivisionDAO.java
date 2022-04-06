@@ -1,6 +1,5 @@
 package DAO;
 
-import Model.Appointments;
 import Model.Division;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,9 +8,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * DivisionDAO interface declaration.
+ */
 public interface DivisionDAO {
     ObservableList<Division> DivisionsList = FXCollections.observableArrayList();
 
+    /**
+     * Get Division from Division ID.
+     * This function takes a integer of a division ID and returns a string of the division name from the Database
+     * @param divisionCode division id
+     * @return division name as a string
+     * @throws SQLException SQLException
+     */
     static String getDivisionfromDivisionId(int divisionCode) throws SQLException {
         String sql = "SELECT * FROM FIRST_LEVEL_DIVISIONS WHERE Division_ID =?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -22,6 +31,14 @@ public interface DivisionDAO {
         }
         return null;
     }
+
+    /**
+     * Get Country from division id function.
+     * This function takes a division id as an interger and returns the country from the database
+     * @param divisionCode entered division id
+     * @return Country name as a string
+     * @throws SQLException SQL exception
+     */
     static String getCountryfromDivId(int divisionCode) throws SQLException {
         String sql = "SELECT * FROM FIRST_LEVEL_DIVISIONS WHERE Division_ID =?";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
@@ -39,6 +56,12 @@ public interface DivisionDAO {
         }
         return null;
     }
+
+    /**
+     * Pull division List.
+     * This function creates a list of all the divisions ID's, their corresponding countries(name) and first level divisions.
+     * @throws SQLException SQL exception
+     */
     static void pullDivisionList() throws SQLException {
         String sql = "SELECT * FROM FIRST_LEVEL_DIVISIONS";
         PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);

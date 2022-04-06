@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="433.0" prefWidth="607.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ContactScheduleController">
+<AnchorPane prefHeight="433.0" prefWidth="673.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ContactScheduleController">
    <children>
       <Text layoutX="8.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View Contact's Schedule" underline="true">
          <font>
@@ -17,18 +17,18 @@
       </Text>
       <ComboBox fx:id="ContactFormNameCombo" layoutX="113.0" layoutY="39.0" prefWidth="150.0" />
       <Text layoutX="29.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Name" />
-      <TableView fx:id="ContactFormTable" layoutX="11.0" layoutY="78.0" prefHeight="305.0" prefWidth="578.0">
+      <TableView fx:id="ContactFormTable" layoutX="13.0" layoutY="78.0" prefHeight="305.0" prefWidth="648.0">
         <columns>
           <TableColumn fx:id="ContactFormApptIdCol" prefWidth="59.0" text="Appt. ID" />
-          <TableColumn fx:id="ContactFormTitleCol" prefWidth="75.0" text="Title" />
-            <TableColumn fx:id="ContactFormTypeCol" minWidth="5.0" prefWidth="58.0" text="Type" />
-            <TableColumn fx:id="ContactFormDescriptionCol" minWidth="5.0" prefWidth="83.0" text="Description" />
-            <TableColumn fx:id="ContactFormDateCol" minWidth="5.0" prefWidth="57.0" text="Date" />
-            <TableColumn fx:id="ContactFormStartTimeCol" minWidth="5.0" text="Start Time" />
-            <TableColumn fx:id="ContractFromEndTimeCol" minWidth="5.0" prefWidth="68.0" text="End Time" />
-            <TableColumn fx:id="ContactFormCustIdCol" minWidth="5.0" prefWidth="97.0" text="Customer ID" />
+          <TableColumn fx:id="ContactFormTitleCol" prefWidth="64.0" text="Title" />
+            <TableColumn fx:id="ContactFormTypeCol" minWidth="5.0" prefWidth="83.0" text="Type" />
+            <TableColumn fx:id="ContactFormDescriptionCol" minWidth="5.0" prefWidth="107.0" text="Description" />
+            <TableColumn fx:id="ContactFormStartTimeCol" minWidth="5.0" prefWidth="130.0" text="Start Date and Time" />
+            <TableColumn fx:id="ContractFromEndTimeCol" minWidth="5.0" prefWidth="119.0" text="End Date and Time" />
+            <TableColumn fx:id="ContactFormCustIdCol" minWidth="5.0" prefWidth="85.0" text="Customer ID" />
         </columns>
       </TableView>
       <Button fx:id="ContactFormExitButton" layoutX="465.0" layoutY="392.0" mnemonicParsing="false" onAction="#ReturnToMain" text="Return To Schedular" />
+      <Button fx:id="getResults" layoutX="274.0" layoutY="39.0" mnemonicParsing="false" onAction="#getResults" text="Get Results" />
    </children>
 </AnchorPane>

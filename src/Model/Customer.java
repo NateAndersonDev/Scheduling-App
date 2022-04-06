@@ -33,48 +33,47 @@ public class Customer {
         this.division = division;
     }
 
+    /**
+     * empty constructor.
+     */
     public Customer() {
-
     }
 
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
-    }
-
+    /**
+     * getter for country.
+     * @return country
+     */
     public String getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
+    /**
+     * getter for division.
+     * @return division
+     */
     public String getDivision() {
         return division;
     }
 
-    public void setDivision(String division) {
-        this.division = division;
-    }
 
-    /**]
-     *
-     * @return get the customer id
+    /**
+     * Getter for customer ID.
+     * @return the customer id
      */
     public int getCustomerId() {
         return customerId;
     }
 
     /**
-     *
-     * @param customerId sets customer id
+     * Settter for customer ID.
+     * @param customerId  customer id
      */
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
 
     /**
-     *
+     * Getter for customer name.
      * @return gets the customer name
      */
     public String getCustomerName() {
@@ -82,72 +81,72 @@ public class Customer {
     }
 
     /**
-     *
-     * @param customerName sets the customer name
+     * Setter for customer name.
+     * @param customerName the customer name
      */
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
 
     /**
-     *
-     * @return get the customer Address
+     * Getter for customer address.
+     * @return get customer Address
      */
     public String getCustomerAddress() {
         return customerAddress;
     }
 
     /**
-     *
-     * @param customerAddress set customer Address
+     * Setter for customer Address.
+     * @param customerAddress customer Address
      */
     public void setCustomAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
 
     /**
-     *
-     * @return get customer Postal Code
+     * Getter for customer postal code.
+     * @return customer Postal Code
      */
     public String getCustomerPostalCode() {
         return customerPostalCode;
     }
 
     /**
-     *
-     * @param customerPostalCode set customer postal code
+     * Setter for customer postal code.
+     * @param customerPostalCode customer postal code
      */
     public void setCustomerPostalCode(String customerPostalCode) {
         this.customerPostalCode = customerPostalCode;
     }
 
     /**
-     *
-     * @return get customer phone number
+     * Getter for customer phone number.
+     * @return customer phone number
      */
     public String getCustomerPhone() {
         return customerPhone;
     }
 
     /**
-     *
-     * @param customerPhone set customer phone number
+     * Setter for customer phone number.
+     * @param customerPhone customer phone number
      */
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
     }
 
     /**
-     *
-     * @return get customer division id
+     * Getter for customer division id.
+     * @return customer division id
      */
     public int getCustomerDivisionId() {
         return customerDivisionId;
     }
 
     /**
-     *
-     * @param customerDivisionId set customer division ID
+     * Setter for customer division ID.
+     * @param customerDivisionId customer division ID
      */
     public void setCustomerDivisionId(int customerDivisionId) {
         this.customerDivisionId = customerDivisionId;
