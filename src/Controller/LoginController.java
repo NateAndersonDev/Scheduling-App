@@ -91,7 +91,7 @@ public class LoginController {
 
         if(UserDao.checkValidUserName(user.getUserName())){
             if(UserDao.checkMatchPw(user.getUserName(),user.getPassword())){
-                Logger.writeToLogSuccess();
+                Logger.writeToLogSuccess(user.getUserName());
                 viewScheduler(event);
                 if(GeneralFunctions.checkUpcomingAppt() == -1) {
                     GeneralFunctions.alertError("No upcoming appointments", "There are no appointments within 15 min from now");
@@ -101,7 +101,7 @@ public class LoginController {
                 FxError.setVisible(true);
             }
         } else {
-            Logger.writeToLogFail();
+            Logger.writeToLogFail(user.getUserName());
             FxError.setVisible(true);
         }
     }

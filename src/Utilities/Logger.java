@@ -25,11 +25,12 @@ public class Logger {
     /**
      * Writes log to file if successful.
      */
-    public static void writeToLogSuccess() {
+    public static void writeToLogSuccess(String username) {
         try{
         Timestamp stamp = new Timestamp(System.currentTimeMillis());
         FileWriter writeLogin = new FileWriter("login_activity.txt",true);
             writeLogin.write("Login attempt #: " + count + "\n");
+            writeLogin.write("Username: " + username + "\n");
             writeLogin.write("Timestamp: " + stamp +"\n");
             writeLogin.write("Login Successful: True \n");
             writeLogin.write("\n");
@@ -43,11 +44,12 @@ public class Logger {
     /**
      * Writes log to file if login was not successful.
      */
-    public static void writeToLogFail() {
+    public static void writeToLogFail(String username) {
         try {
             Timestamp stamp = new Timestamp(System.currentTimeMillis());
             FileWriter writeLogin = new FileWriter("login_activity.txt",true);
             writeLogin.write("Login attempt #: " + count +"\n");
+            writeLogin.write("Username: " + username + "\n");
             writeLogin.write("Timestamp: " + stamp+"\n");
             writeLogin.write("Login Successful: False \n");
             writeLogin.write("\n");

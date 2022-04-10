@@ -20,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -294,9 +295,6 @@ public class SchedulerController {
      */
     public void SaveBtnPress() {
         try {
-            int selectedappointmentId = MainAppointmentTable.getSelectionModel().selectedItemProperty().getValue().getAppointmentId();
-            int apptIdField = Integer.parseInt(MainAppointmentId.getText());
-
             LocalDate date = MaineDatePicker.getValue();
             LocalTime startTime = MainStartTimeCombo.getValue();
             LocalTime endTime = MainEndTimeCombo.getValue();
@@ -314,8 +312,8 @@ public class SchedulerController {
             apptToAdd.setUserID(MainUserIdCombo.getValue());
 
             if (endTime.isAfter(startTime)) {
-                if (((GeneralFunctions.DoesOverlap(startTime, endTime, date, apptToAdd.getCustomerId())) == -1) || selectedappointmentId == apptIdField){
                     if (Objects.equals(MainAppointmentId.getText(), "Auto-Generated")) {
+                        if (((GeneralFunctions.DoesOverlap(startTime, endTime, date, apptToAdd.getCustomerId(), -1)) == -1)){
 
                         int rowsAffected = AppointmentsDao.addNewAppt(apptToAdd);
 
@@ -328,8 +326,13 @@ public class SchedulerController {
                         } else {
                             GeneralFunctions.alertError("Failed", "Appointment not added, check fields for errors");
                         }
+                        } else {
+                            GeneralFunctions.alertError("Appointment Time Conflict", "Selected Appointment times overlap with appointment: " +
+                                    (GeneralFunctions.DoesOverlap(startTime, endTime, date, apptToAdd.getCustomerId(), apptToAdd.getAppointmentId())));
+                        }
                     } else {
                         apptToAdd.setAppointmentId(Integer.parseInt(MainAppointmentId.getText()));
+                        if (((GeneralFunctions.DoesOverlap(startTime, endTime, date, apptToAdd.getCustomerId(), apptToAdd.getAppointmentId())) == -1)){
                         int rowsAffected = AppointmentsDao.updateAppt(apptToAdd);
                         if (rowsAffected > 0) {
                             GeneralFunctions.successMessage("Appointment Updated", "Appointment " + apptToAdd.getAppointmentId() + " was updated Successfully");
@@ -337,11 +340,12 @@ public class SchedulerController {
                             AppointmentsDao.pullAppointments();
                             MainAppointmentTable.setItems(AppointmentsDao.apptoblist);
                         }
+                        } else {
+                            GeneralFunctions.alertError("Appointment Time Conflict", "Selected Appointment times overlap with appointment: " +
+                                    (GeneralFunctions.DoesOverlap(startTime, endTime, date, apptToAdd.getCustomerId(), apptToAdd.getAppointmentId())));
+                        }
                     }
-                } else {
-                    GeneralFunctions.alertError("Appointment Time Conflict", "Selected Appointment times overlap with appointment: " +
-                            (GeneralFunctions.DoesOverlap(startTime, endTime, date, apptToAdd.getCustomerId())));
-                }
+
             } else {
                 GeneralFunctions.alertError("End time before start time", "Please ensure the appointment end time is at least 15min after the start time");
             }
@@ -350,6 +354,7 @@ public class SchedulerController {
         } catch (NullPointerException e){
             GeneralFunctions.alertError("Fields are empty", "Please ensure all fields have content");
         } catch (NumberFormatException e){
+            e.printStackTrace();
             GeneralFunctions.alertError("Please click 'Add New Appointment' button", "User must generate new appointment ID by clicking the 'Add New Appointment' button before trying to save the appointment");
         }
     }

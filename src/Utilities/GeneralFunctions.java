@@ -234,7 +234,7 @@ public interface GeneralFunctions {
      * @param custId customer ID of who the appointment is with
      * @return appointment ID if date overlaps, otherwise -1
      */
-    static int DoesOverlap(LocalTime startTime, LocalTime endTime, LocalDate date, int custId) {
+    static int DoesOverlap(LocalTime startTime, LocalTime endTime, LocalDate date, int custId, int appointmentId) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
         LocalDateTime start = LocalDateTime.of(date, startTime);
         LocalDateTime end = LocalDateTime.of(date, endTime);
@@ -242,7 +242,8 @@ public interface GeneralFunctions {
             LocalDateTime exitingStart = LocalDateTime.parse(appt.getStart(), df);
             LocalDateTime existingEnd = LocalDateTime.parse(appt.getEnd(), df);
             LocalDate existingDate = exitingStart.toLocalDate();
-            if (custId == appt.getCustomerId()) {
+
+            if (custId == appt.getCustomerId() && (appointmentId != appt.getAppointmentId())) {
                 if (date.isEqual(existingDate)) {
                     if (start.isAfter(exitingStart) && start.isBefore(existingEnd) || start.isEqual(exitingStart)) {
                         return appt.getAppointmentId();
@@ -252,7 +253,6 @@ public interface GeneralFunctions {
                     }
                 }
             }
-
         }
         return -1;
     }
