@@ -1,10 +1,10 @@
 README
 
-Title: C195
-Purpose: Create an application that would perform the functional requirements outlined in the WGU C195 course performance assessment.
+Title: XXXXXXXX
+Purpose: Create an application that would perform the functional requirements outlined in the XXXXXXXXX course performance assessment.
  
 Author: Nathan Anderson
-Contact information: nand160@wgu.edu
+Contact information: XXXXXXXXXXXXXX
 Application version: v1.0.0
 Date: 4/5/2022
 
